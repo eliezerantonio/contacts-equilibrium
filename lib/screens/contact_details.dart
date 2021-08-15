@@ -67,6 +67,7 @@ class ContactDetails extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -137,6 +138,66 @@ class ContactDetails extends StatelessWidget {
                           errorMaxLines: 1,
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(30)),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          focusColor: Colors.transparent,
+                          hintText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 2.0),
+                          ),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                              top: 15, left: 10, right: 10, bottom: 15),
+                          errorMaxLines: 1,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(30)),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          focusColor: Colors.transparent,
+                          hintText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 2.0),
+                          ),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                              top: 15, left: 10, right: 10, bottom: 15),
+                          errorMaxLines: 1,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    RaisedButton(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 120, vertical: 15),
+                      shape: StadiumBorder(),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/contacts_screen');
+                      },
+                      child: Text("Confirmar"),
                     ),
                   ],
                 ),
