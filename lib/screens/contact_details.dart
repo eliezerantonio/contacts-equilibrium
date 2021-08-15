@@ -9,10 +9,12 @@ class ContactDetails extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
           children: [
-            Padding(
+            Container(
               padding: const EdgeInsets.all(16),
+              height: size.height * 0.3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -32,7 +34,7 @@ class ContactDetails extends StatelessWidget {
                     ],
                   ),
                   CircleAvatar(
-                    radius: 50,
+                    radius: 30,
                     backgroundColor: Colors.white,
                     child: Text(
                       "EA",
@@ -56,7 +58,7 @@ class ContactDetails extends StatelessWidget {
             ),
             Spacer(),
             Container(
-              height: (size.height * 0.7),
+              height: size.height * 0.7,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
