@@ -1,3 +1,4 @@
+import 'package:contactos/screens/contact_details.dart';
 import 'package:contactos/screens/contacts_screen.dart';
 import 'package:contactos/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Contactos',
-      home: LoginScreen(),
+      home: ContactDetails(),
       routes: {
         "/login_screen": (_) => LoginScreen(),
         "/contacts_screen": (_) => ContactsScreen(),
