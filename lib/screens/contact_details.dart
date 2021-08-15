@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ContactsScreen extends StatelessWidget {
-  const ContactsScreen({Key key}) : super(key: key);
+class ContactDetails extends StatelessWidget {
+  const ContactDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
