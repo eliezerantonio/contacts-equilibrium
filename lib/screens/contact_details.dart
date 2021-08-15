@@ -112,6 +112,32 @@ class ContactDetails extends StatelessWidget {
                         ],
                       ),
                     ),
+                    Divider(),
+                    Text("Informacoes"),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(30)),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          focusColor: Colors.transparent,
+                          hintText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                                color: Colors.white, width: 2.0),
+                          ),
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          contentPadding: const EdgeInsets.only(
+                              top: 15, left: 10, right: 10, bottom: 15),
+                          errorMaxLines: 1,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
