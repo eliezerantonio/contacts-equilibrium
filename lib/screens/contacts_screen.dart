@@ -1,6 +1,8 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:contactos/models/contacts.dart';
 import 'package:contactos/services/contacts_service.dart';
 import 'package:contactos/widgets/custom_textformfield.dart';
+import 'package:contactos/widgets/loading_screen.dart';
 import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -31,17 +33,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        onRefresh: _getContacts,
-        header: WaterDropHeader(
-          complete: Icon(Icons.check, color: Colors.green[400]),
-          waterDropColor: Colors.green[400],
-        ),
-        child: SafeArea(child: buildBody(size)),
-      ),
+      backgroundColor: contacts.isEmpty ? Colors.white : Colors.black,
+      body:
+          SafeArea(child: contacts.isEmpty ? LoadingScreen() : buildBody(size)),
     );
   }
 
@@ -50,35 +44,37 @@ class _ContactsScreenState extends State<ContactsScreen> {
       // physics: NeverScrollableScrollPhysics(),
       physics: BouncingScrollPhysics(),
       children: [
-        _header(),
+        FadeInDown(child: _header()),
         SizedBox(
           height: 7,
         ),
-        Container(
-          height: (130.0 * this.contacts.length),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40),
-              topRight: Radius.circular(40),
-            ),
-          ),
+        FadeInUp(
           child: Container(
-            height: (size.height),
-            padding: EdgeInsets.all(20),
-            margin: EdgeInsets.only(bottom: 50),
-            child: ListView.builder(
-              itemCount: this.contacts.length,
-              physics: NeverScrollableScrollPhysics(),
-              // shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) => Column(
-                children: [
-                  SizedBox(height: 6),
-                  index % 2 == 0
-                      ? contactTile(contacts[index], 'assets/avatar.gif')
-                      : contactTile(contacts[index], 'assets/avatar2.gif'),
-                  SizedBox(height: 6),
-                ],
+            height: (130.0 * this.contacts.length),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
+              ),
+            ),
+            child: Container(
+              height: (size.height),
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.only(bottom: 50),
+              child: ListView.builder(
+                itemCount: this.contacts.length,
+                physics: NeverScrollableScrollPhysics(),
+                // shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) => Column(
+                  children: [
+                    SizedBox(height: 6),
+                    index % 2 == 0
+                        ? contactTile(contacts[index], 'assets/avatar.gif')
+                        : contactTile(contacts[index], 'assets/avatar2.gif'),
+                    SizedBox(height: 6),
+                  ],
+                ),
               ),
             ),
           ),
