@@ -1,5 +1,6 @@
 import 'package:contactos/services/auth_service.dart';
 import 'package:contactos/widgets/custom_textformfield.dart';
+import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,25 +45,27 @@ class LoginScreen extends StatelessWidget {
               shape: StadiumBorder(),
               color: Colors.black,
               textColor: Colors.white,
-              onPressed: () async{
-FocusScope.of(context).unfocus();
-                    final loginOk = await authService.login(
-                      userController.text.trim(),
-                      passControlller.text.trim(),
-                    );
-
-                    if (loginOk) {
-                      Navigator.pushReplacementNamed(context, "/contacts_screen");
-                    } else {
-                      //   mostrar alerta
-                      showAlert(
-                        context,
-                        "Login incorreto",
-                        'Verifique seus credencias',
+              onPressed: !authService.loading
+                  ? () async {
+                      FocusScope.of(context).unfocus();
+                      final loginOk = await authService.login(
+                        userController.text.trim(),
+                        passControlller.text.trim(),
                       );
-                    }
 
-              },
+                      if (loginOk) {
+                        Navigator.pushReplacementNamed(
+                            context, "/contacts_screen");
+                      } else {
+                        //   mostrar alerta
+                        showAlert(
+                          context,
+                          "Login incorreto",
+                          'Verifique seus credencias',
+                        );
+                      }
+                    }
+                  : null,
               child: Text("Entrar"),
             ),
             SizedBox(height: 30),

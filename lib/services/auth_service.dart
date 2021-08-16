@@ -28,15 +28,16 @@ class AuthService with ChangeNotifier {
 
   static Future<void> deleteToken() async {
     final _storage = new FlutterSecureStorage();
-    await _storage.delete(key: "token");
+    await _storage.delete(key: "access");
   }
 
   Future login(String email, String password) async {
     try {
+      print(email);
       loading = true;
       final data = {
-        "email": email,
-        "password": password,
+        "user": email,
+        "pass": password,
       };
 
       final response = await http.post(
@@ -46,16 +47,19 @@ class AuthService with ChangeNotifier {
           'Content-Type': 'application/json',
         },
       );
+      print(response);
       if (response.statusCode == 200) {
         final loginResponse = tokenResponseFromJson(response.body);
         this.tokenResponse = loginResponse;
-
+        print(loginResponse);
         await this._saveToken(loginResponse.access);
         return true;
       } else {
         return false;
       }
-    } catch (e) {} finally {
+    } catch (e) {
+      print(e);
+    } finally {
       loading = false;
     }
   }

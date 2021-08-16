@@ -9,7 +9,8 @@ class ContactsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
+        child: ListView(
+          physics: BouncingScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
@@ -58,7 +59,7 @@ class ContactsScreen extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    "Favoritos",
+                    "Recentes",
                     style: TextStyle(
                       color: Colors.white,
                     ),

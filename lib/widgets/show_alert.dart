@@ -15,7 +15,7 @@ showAlert(BuildContext context, String title, String subtitle) {
                 actions: [
                   MaterialButton(
                     elevation: 5,
-                    color: Colors.blue,
+                    color: Colors.black,
                     onPressed: () {
                       Navigator.pop(context);
                     },
