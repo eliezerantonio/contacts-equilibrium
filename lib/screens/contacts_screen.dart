@@ -37,8 +37,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
         enablePullDown: true,
         onRefresh: _getContacts,
         header: WaterDropHeader(
-          complete: Icon(Icons.check, color: Colors.blue[400]),
-          waterDropColor: Colors.blue[400],
+          complete: Icon(Icons.check, color: Colors.green[400]),
+          waterDropColor: Colors.green[400],
         ),
         child: SafeArea(child: buildBody(size)),
       ),
@@ -47,8 +47,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   Widget buildBody(Size size) {
     return ListView(
-      // physics: BouncingScrollPhysics(),
-          physics: NeverScrollableScrollPhysics(),
+      // physics: NeverScrollableScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       children: [
         _header(),
         SizedBox(
@@ -67,9 +67,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
             padding: EdgeInsets.all(20),
             child: ListView.builder(
               itemCount: this.contacts.length,
+              physics: BouncingScrollPhysics(),
               shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) =>
+              itemBuilder: (BuildContext context, int index) => Column(
+                children: [
+                  SizedBox(height: 6),
                   contactTile(contacts[index]),
+                  SizedBox(height: 6),
+                ],
+              ),
             ),
           ),
         ),
@@ -188,40 +194,6 @@ class _ContactsScreenState extends State<ContactsScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Favoritos",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            height: 14,
-          ),
-          Container(
-            height: 70,
-            width: double.infinity,
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              children: [
-                Container(
-                  height: 70,
-                  width: 70,
-                  margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
@@ -231,78 +203,85 @@ class _ContactsScreenState extends State<ContactsScreen> {
     final nameController = TextEditingController();
     final phoneController = TextEditingController();
     final emailController = TextEditingController();
-    final contactService = context.read<ContactsService>();
+    // final contactService = context.read<ContactsService>();
     return showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  height: 50,
-                  padding: const EdgeInsets.all(8.0),
-                  width: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Icon(
-                    Icons.people,
-                    size: 30,
-                    color: Colors.white,
+          return Consumer<ContactsService>(builder: (_, contactService, __) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    height: 50,
+                    padding: const EdgeInsets.all(8.0),
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Icon(
+                      Icons.people,
+                      size: 30,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Divider(),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextFormField(
-                  hintText: "Nome",
-                  controller: nameController,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextFormField(
-                  hintText: "E-mail",
-                  type: TextInputType.emailAddress,
-                  controller: emailController,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomTextFormField(
-                  hintText: "Telefone",
-                  type: TextInputType.phone,
-                  controller: phoneController,
-                ),
-                SizedBox(height: 30),
-                RaisedButton(
-                  padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
-                  shape: StadiumBorder(),
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  onPressed: () async {
-                    final ok = await contactService.save(nameController.text,
-                        emailController.text, phoneController.text);
-                    if (ok) {
-                      Navigator.pop(context);
-                      _getContacts();
-                    } else {
-                      showAlert(
-                        context,
-                        "Cadastro incorreto",
-                        'Verifique os dados',
-                      );
-                    }
-                  },
-                  child: Text("Salvar"),
-                ),
-                SizedBox(height: 15),
-              ],
-            ),
-          );
+                  Divider(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: "Nome",
+                    controller: nameController,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: "E-mail",
+                    type: TextInputType.emailAddress,
+                    controller: emailController,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    hintText: "Telefone",
+                    type: TextInputType.phone,
+                    controller: phoneController,
+                  ),
+                  SizedBox(height: 30),
+                  RaisedButton(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 120, vertical: 15),
+                    shape: StadiumBorder(),
+                    color: Colors.black,
+                    textColor: Colors.white,
+                    onPressed: !contactService.loading
+                        ? () async {
+                            final ok = await contactService.save(
+                                nameController.text,
+                                emailController.text,
+                                phoneController.text);
+                            if (ok) {
+                              Navigator.pop(context);
+                              _getContacts();
+                            } else {
+                              showAlert(
+                                context,
+                                "Cadastro incorreto",
+                                'Verifique os dados',
+                              );
+                            }
+                          }
+                        : null,
+                    child: Text("Salvar"),
+                  ),
+                  SizedBox(height: 15),
+                ],
+              ),
+            );
+          });
         });
   }
 

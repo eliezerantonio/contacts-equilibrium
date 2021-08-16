@@ -1,14 +1,21 @@
 import 'package:contactos/models/contacts.dart';
+import 'package:contactos/services/contacts_service.dart';
 import 'package:contactos/widgets/custom_textformfield.dart';
+import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ContactDetails extends StatelessWidget {
-  const ContactDetails({Key key}) : super(key: key);
+  ContactDetails({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     Result contact = ModalRoute.of(context).settings.arguments;
+    final nameController = TextEditingController(text: contact.name);
+    final phoneController = TextEditingController(text: contact.phone);
+    final emailController = TextEditingController(text: contact.email);
+    final contactService = context.watch<ContactsService>();
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -129,21 +136,21 @@ class ContactDetails extends StatelessWidget {
                     ),
                     CustomTextFormField(
                       hintText: "Nome",
-                      initialValue: contact.name,
+                      controller: nameController,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     CustomTextFormField(
                       hintText: "E-mail",
-                         initialValue: contact.email,
+                      controller: emailController,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     CustomTextFormField(
                       hintText: "Telefone",
-                        initialValue: contact.phone,
+                      controller: phoneController,
                     ),
                     SizedBox(height: 30),
                     RaisedButton(
@@ -152,9 +159,28 @@ class ContactDetails extends StatelessWidget {
                       shape: StadiumBorder(),
                       color: Colors.black,
                       textColor: Colors.white,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/contacts_screen');
-                      },
+                      onPressed: !contactService.loading
+                          ? () async {
+                              final ok = await contactService.update(
+                                  nameController.text,
+                                  emailController.text,
+                                  phoneController.text,
+                                  contact.id);
+                              if (ok) {
+                                showAlert(
+                                  context,
+                                  "Sucesso",
+                                  'Dados Atualizados ',
+                                );
+                              } else {
+                                showAlert(
+                                  context,
+                                  "Cadastro incorreto",
+                                  'Verifique os dados',
+                                );
+                              }
+                            }
+                          : null,
                       child: Text("Editar"),
                     ),
                     SizedBox(height: 15),

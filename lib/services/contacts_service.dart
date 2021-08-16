@@ -55,6 +55,41 @@ class ContactsService with ChangeNotifier {
       if (response.statusCode == 201) {
         notifyListeners();
         return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    } finally {
+      loading = false;
+    }
+  }
+
+  Future update(String name, String email, String phone, String id) async {
+    try {
+      loading = true;
+      final Map<String, dynamic> data = {
+        "name": name,
+        "email": email,
+        "phone": phone,
+      };
+
+      final response = await http.put(
+        "${Environment.apiUrl}/contacts/$id",
+        body: json.encode(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await AuthService.getToken()}'
+        },
+      );
+      if (response.statusCode == 201) {
+        notifyListeners();
+        return true;
+      } else {
+        print(response.statusCode);
+        print(response.body);
+        return false;
       }
     } catch (e) {
       print(e);
