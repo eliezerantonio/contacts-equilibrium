@@ -29,161 +29,216 @@ class _ContactsScreenState extends State<ContactsScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Container(
-          child: ListView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Contactos",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 20)),
-                        Icon(
-                          Icons.add_box_rounded,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[800],
-                          borderRadius: BorderRadius.circular(30)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          focusColor: Colors.transparent,
-                          hintText: 'Procurar',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          prefixIcon: Icon(Icons.search, color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 2.0),
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                              top: 15, left: 10, right: 10, bottom: 15),
-                          errorMaxLines: 1,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "Recentes",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Container(
-                      height: 40,
-                      width: double.infinity,
-                      child: ListView(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        children: [
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 40,
-                            margin: EdgeInsets.only(right: 10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _getContacts,
+        header: WaterDropHeader(
+          complete: Icon(Icons.check, color: Colors.blue[400]),
+          waterDropColor: Colors.blue[400],
+        ),
+        child: SafeArea(child: buildBody(size)),
+      ),
+    );
+  }
+
+  Widget buildBody(Size size) {
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      children: [
+        _header(),
+        SizedBox(
+          height: 7,
+        ),
+        Container(
+          height: (size.height),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: ListView(
+              children: [
+                contactTile(),
+                SizedBox(
+                  height: 2,
                 ),
-              ),
-              Spacer(),
-              Container(
-                height: (size.height * 0.7),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+                contactTile(),
+                SizedBox(
+                  height: 2,
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Container contactTile() {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 70,
+                  width: 70,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
                   ),
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Eliezer Antonio",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Text(
+                      "eliezer@gmail.com",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Container(
+              height: 15,
+              width: 15,
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(15),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _header() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Contactos",
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
+              Icon(
+                Icons.add_box_rounded,
+                size: 40,
+                color: Colors.white,
               ),
             ],
           ),
-        ),
+          SizedBox(
+            height: 14,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.circular(30)),
+            child: TextFormField(
+              decoration: InputDecoration(
+                focusColor: Colors.transparent,
+                hintText: 'Procurar',
+                hintStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: const BorderSide(color: Colors.white, width: 2.0),
+                ),
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                contentPadding: const EdgeInsets.only(
+                    top: 15, left: 10, right: 10, bottom: 15),
+                errorMaxLines: 1,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "Favoritos",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 14,
+          ),
+          Container(
+            height: 70,
+            width: double.infinity,
+            child: ListView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              children: [
+                Container(
+                  height: 70,
+                  width: 70,
+                  margin: EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
