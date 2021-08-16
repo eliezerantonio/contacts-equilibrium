@@ -47,21 +47,30 @@ class LoginScreen extends StatelessWidget {
               textColor: Colors.white,
               onPressed: !authService.loading
                   ? () async {
-                      FocusScope.of(context).unfocus();
-                      final loginOk = await authService.login(
-                        userController.text.trim(),
-                        passControlller.text.trim(),
-                      );
+                      if (userController.text.trim().isNotEmpty ||
+                          passControlller.text.trim().isNotEmpty) {
+                        FocusScope.of(context).unfocus();
+                        final loginOk = await authService.login(
+                          userController.text.trim(),
+                          passControlller.text.trim(),
+                        );
 
-                      if (loginOk) {
-                        Navigator.pushReplacementNamed(
-                            context, "/contacts_screen");
+                        if (loginOk) {
+                          Navigator.pushReplacementNamed(
+                              context, "/contacts_screen");
+                        } else {
+                          //   mostrar alerta
+                          showAlert(
+                            context,
+                            "Login incorreto",
+                            'Verifique seus credencias',
+                          );
+                        }
                       } else {
-                        //   mostrar alerta
                         showAlert(
                           context,
-                          "Login incorreto",
-                          'Verifique seus credencias',
+                          "Erro!",
+                          'Preencha os campos',
                         );
                       }
                     }
