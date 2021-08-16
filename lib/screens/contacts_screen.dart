@@ -61,101 +61,75 @@ class _ContactsScreenState extends State<ContactsScreen> {
           ),
           child: Container(
             padding: EdgeInsets.all(20),
-            child: ListView(
-              children: [
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-                contactTile(),
-                SizedBox(
-                  height: 2,
-                ),
-              ],
+            child: ListView.builder(
+              itemCount: this.contacts.length,
+              itemBuilder: (BuildContext context, int index) =>
+                  contactTile(contacts[index]),
             ),
           ),
-        )
+        ),
       ],
     );
   }
 
-  Container contactTile() {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(10),
-      ),
+  Widget contactTile(Result contact) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/contact_detail',);
+      },
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Container(
-                  height: 70,
-                  width: 70,
-                  margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                        image: NetworkImage(
-                            "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    margin: EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      image: DecorationImage(
+                          image: NetworkImage(
+                              "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
+                    ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Eliezer Antonio",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    Text(
-                      "eliezer@gmail.com",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Container(
-              height: 15,
-              width: 15,
-              margin: EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        contact.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      Text(
+                        contact.email,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ),
-          ],
+              Container(
+                height: 15,
+                width: 15,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

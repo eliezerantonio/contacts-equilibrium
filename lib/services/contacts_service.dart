@@ -18,7 +18,6 @@ class ContactsService with ChangeNotifier {
       });
 
       final usersResponse = contactsResponseFromJson(response.body);
-      print(response.statusCode);
       return usersResponse.results;
     } catch (e) {
       return [];

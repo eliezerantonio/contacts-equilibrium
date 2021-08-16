@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         routes: {
           "/login_screen": (_) => LoginScreen(),
           "/contacts_screen": (_) => ContactsScreen(),
+          "/contact_detail": (_) => ContactDetails(),
         },
       ),
     );
