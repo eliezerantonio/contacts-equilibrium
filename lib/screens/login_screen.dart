@@ -1,4 +1,7 @@
+import 'package:contactos/services/auth_service.dart';
+import 'package:contactos/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -12,6 +15,9 @@ class LoginScreen extends StatelessWidget {
   }
 
   Container _body(BuildContext context) {
+    final userController = TextEditingController();
+    final passControlller = TextEditingController();
+    final authService = context.watch<AuthService>();
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.all(20),
@@ -23,48 +29,14 @@ class LoginScreen extends StatelessWidget {
             Image.asset("assets/logo.gif", width: 250, height: 220),
             // Text("Contact"),
             SizedBox(height: 15),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(30)),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  focusColor: Colors.transparent,
-                  hintText: 'E-mail',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide:
-                        const BorderSide(color: Colors.white, width: 2.0),
-                  ),
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(
-                      top: 15, left: 10, right: 10, bottom: 15),
-                  errorMaxLines: 1,
-                ),
-              ),
+            CustomTextFormField(
+              hintText: 'E-mail',
+              controller: userController,
             ),
             SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(30)),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  focusColor: Colors.transparent,
-                  hintText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide:
-                        const BorderSide(color: Colors.white, width: 2.0),
-                  ),
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  contentPadding: const EdgeInsets.only(
-                      top: 15, left: 10, right: 10, bottom: 15),
-                  errorMaxLines: 1,
-                ),
-              ),
+            CustomTextFormField(
+              hintText: 'Pasword',
+              controller: passControlller,
             ),
             SizedBox(height: 30),
             RaisedButton(
@@ -72,18 +44,31 @@ class LoginScreen extends StatelessWidget {
               shape: StadiumBorder(),
               color: Colors.black,
               textColor: Colors.white,
-              onPressed: () {
-                Navigator.pushNamed(context, '/contacts_screen');
+              onPressed: () async{
+FocusScope.of(context).unfocus();
+                    final loginOk = await authService.login(
+                      userController.text.trim(),
+                      passControlller.text.trim(),
+                    );
+
+                    if (loginOk) {
+                      Navigator.pushReplacementNamed(context, "/contacts_screen");
+                    } else {
+                      //   mostrar alerta
+                      showAlert(
+                        context,
+                        "Login incorreto",
+                        'Verifique seus credencias',
+                      );
+                    }
+
               },
               child: Text("Entrar"),
             ),
             SizedBox(height: 30),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                "Criar conta ?",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+            Text(
+              "Criar conta ?",
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
