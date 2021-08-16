@@ -5,31 +5,35 @@ import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
 
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+final userController = TextEditingController();
+final passControlller = TextEditingController();
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _body(context),
-    );
-  }
-
-  Container _body(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height,
-      padding: EdgeInsets.all(20),
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            header(),
-            body(context),
-          ],
+      body: Container(
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height,
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              header(),
+              body(context),
+            ],
+          ),
         ),
       ),
     );
@@ -57,8 +61,6 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget body(BuildContext context) {
-    final userController = TextEditingController();
-    final passControlller = TextEditingController();
     return FadeInRight(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
