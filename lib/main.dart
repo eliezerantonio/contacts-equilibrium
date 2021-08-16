@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => AuthService(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => ContactsService(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

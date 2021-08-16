@@ -3,6 +3,7 @@ import 'package:contactos/services/contacts_service.dart';
 import 'package:contactos/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:provider/provider.dart';
 
 class ContactsScreen extends StatefulWidget {
   const ContactsScreen({Key key}) : super(key: key);
@@ -227,7 +228,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     final nameController = TextEditingController();
     final phoneController = TextEditingController();
     final emailControoler = TextEditingController();
-    
+    final contactService = context.watch<ContactsService>();
     return showModalBottomSheet(
         context: context,
         builder: (context) {

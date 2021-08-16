@@ -1,5 +1,7 @@
 // import 'package:http/http.dart' as http;
 
+import 'dart:convert';
+
 import 'package:contactos/globals/environment.dart';
 import 'package:contactos/models/contacts.dart';
 import 'package:contactos/models/contacts_response.dart';
@@ -9,6 +11,15 @@ import 'package:http/http.dart' as http;
 import 'auth_service.dart';
 
 class ContactsService with ChangeNotifier {
+  bool _loading = false;
+
+  set loading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
+
+  get loading => _loading;
+
   Future<List<Result>> getContacts() async {
     try {
       final response =
@@ -21,6 +32,30 @@ class ContactsService with ChangeNotifier {
       return usersResponse.results;
     } catch (e) {
       return [];
+    }
+  }
+
+  Future save(String name, String email, int phone) async {
+    try {
+      loading = true;
+      final data = {
+        "name": name,
+        "email": email,
+        "phone": phone,
+      };
+
+      final response = await http.post(
+        "${Environment.apiUrl}/contacts",
+        body: json.encode(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await AuthService.getToken()}'
+        },
+      );
+    } catch (e) {
+      print(e);
+    } finally {
+      loading = false;
     }
   }
 }
