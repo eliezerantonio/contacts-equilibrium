@@ -1,5 +1,6 @@
 import 'package:contactos/models/contacts.dart';
 import 'package:contactos/services/contacts_service.dart';
+import 'package:contactos/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -146,10 +147,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
             children: [
               Text("Contactos",
                   style: TextStyle(color: Colors.white, fontSize: 20)),
-              Icon(
-                Icons.add_box_rounded,
-                size: 40,
-                color: Colors.white,
+              GestureDetector(
+                onTap: () {
+                  modalSave();
+                },
+                child: Icon(
+                  Icons.add_box_rounded,
+                  size: 40,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -215,6 +221,74 @@ class _ContactsScreenState extends State<ContactsScreen> {
         ],
       ),
     );
+  }
+
+  Future modalSave() {
+    final nameController = TextEditingController();
+    final phoneController = TextEditingController();
+    final emailControoler = TextEditingController();
+    
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.all(8.0),
+                  width: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Icon(
+                    Icons.people,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+                Divider(),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  hintText: "Nome",
+                  controller: nameController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  hintText: "E-mail",
+                  type: TextInputType.emailAddress,
+                  controller: emailControoler,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomTextFormField(
+                  hintText: "Telefone",
+                  type: TextInputType.phone,
+                  controller: phoneController,
+                ),
+                SizedBox(height: 30),
+                RaisedButton(
+                  padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
+                  shape: StadiumBorder(),
+                  color: Colors.black,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/contacts_screen');
+                  },
+                  child: Text("Salvar"),
+                ),
+                SizedBox(height: 15),
+              ],
+            ),
+          );
+        });
   }
 
   void _getContacts() async {
