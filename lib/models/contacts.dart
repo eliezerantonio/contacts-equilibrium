@@ -1,24 +1,35 @@
-class Results {
+class Result {
+  Result({
+    this.id,
+    this.phone,
+    this.name,
+    this.email,
+    this.createdAt,
+    this.updatedAt,
+  });
+
   String id;
   String phone;
   String name;
   String email;
+  DateTime createdAt;
+  DateTime updatedAt;
 
-  Results({this.id, this.phone, this.name, this.email});
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
+        id: json["id"],
+        phone: json["phone"],
+        name: json["name"],
+        email: json["email"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
 
-  Results.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    phone = json['phone'];
-    name = json['name'];
-    email = json['email'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['phone'] = this.phone;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "phone": phone,
+        "name": name,
+        "email": email,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+      };
 }
