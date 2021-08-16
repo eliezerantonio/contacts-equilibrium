@@ -55,7 +55,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
           height: 7,
         ),
         Container(
-          height: (size.height),
+          height: (130.0 * this.contacts.length),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -64,11 +64,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
           ),
           child: Container(
+            height: (size.height),
             padding: EdgeInsets.all(20),
+            margin: EdgeInsets.only(bottom: 50),
             child: ListView.builder(
               itemCount: this.contacts.length,
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              // shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) => Column(
                 children: [
                   SizedBox(height: 6),
@@ -110,8 +112,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "https://pbs.twimg.com/profile_images/1407315372819324928/Vhst6oDe_400x400.jpg")),
+                          image: AssetImage("assets/avatar.gif")),
                     ),
                   ),
                   Column(
