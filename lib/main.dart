@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'login_screen',
-        initialRoute: '/contacts_screen',
+        title: 'Contactos',
+        initialRoute: '/login_screen',
         routes: {
           "/login_screen": (_) => LoginScreen(),
           "/contacts_screen": (_) => ContactsScreen(),

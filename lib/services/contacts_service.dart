@@ -14,11 +14,11 @@ class ContactsService with ChangeNotifier {
       final response =
           await http.get("${Environment.apiUrl}/contacts", headers: {
         "Content-type": "application/json",
-        'Authorization bearer': await AuthService.getToken(),
+        'Authorization': 'Bearer ${await AuthService.getToken()}'
       });
 
       final usersResponse = contactsResponseFromJson(response.body);
-      print(usersResponse.results);
+      print(response.statusCode);
       return usersResponse.results;
     } catch (e) {
       return [];
