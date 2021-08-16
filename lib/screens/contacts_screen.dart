@@ -74,7 +74,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
               itemBuilder: (BuildContext context, int index) => Column(
                 children: [
                   SizedBox(height: 6),
-                  contactTile(contacts[index]),
+                  index % 2 == 0
+                      ? contactTile(contacts[index], 'assets/avatar.gif')
+                      : contactTile(contacts[index], 'assets/avatar2.gif'),
                   SizedBox(height: 6),
                 ],
               ),
@@ -85,7 +87,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     );
   }
 
-  Widget contactTile(Result contact) {
+  Widget contactTile(Result contact, String url) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/contact_detail', arguments: contact);
@@ -106,13 +108,14 @@ class _ContactsScreenState extends State<ContactsScreen> {
               Row(
                 children: [
                   Container(
-                    height: 70,
-                    width: 70,
+                    height: 100,
+                    width: 100,
                     margin: EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       image: DecorationImage(
-                          image: AssetImage("assets/avatar.gif")),
+                        image: AssetImage(url),
+                      ),
                     ),
                   ),
                   Column(
@@ -149,7 +152,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   Widget _header() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -206,80 +209,84 @@ class _ContactsScreenState extends State<ContactsScreen> {
     final emailController = TextEditingController();
     // final contactService = context.read<ContactsService>();
     return showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (context) {
           return Consumer<ContactsService>(builder: (_, contactService, __) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 50,
-                    padding: const EdgeInsets.all(8.0),
-                    width: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.green,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Icon(
-                      Icons.people,
-                      size: 30,
-                      color: Colors.white,
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.all(8.0),
+                      width: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Icon(
+                        Icons.people,
+                        size: 30,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: "Nome",
-                    controller: nameController,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: "E-mail",
-                    type: TextInputType.emailAddress,
-                    controller: emailController,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextFormField(
-                    hintText: "Telefone",
-                    type: TextInputType.phone,
-                    controller: phoneController,
-                  ),
-                  SizedBox(height: 30),
-                  RaisedButton(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 120, vertical: 15),
-                    shape: StadiumBorder(),
-                    color: Colors.black,
-                    textColor: Colors.white,
-                    onPressed: !contactService.loading
-                        ? () async {
-                            final ok = await contactService.save(
-                                nameController.text,
-                                emailController.text,
-                                phoneController.text);
-                            if (ok) {
-                              Navigator.pop(context);
-                              _getContacts();
-                            } else {
-                              showAlert(
-                                context,
-                                "Cadastro incorreto",
-                                'Verifique os dados',
-                              );
+                    Divider(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: "Nome",
+                      controller: nameController,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: "E-mail",
+                      type: TextInputType.emailAddress,
+                      controller: emailController,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomTextFormField(
+                      hintText: "Telefone",
+                      type: TextInputType.phone,
+                      controller: phoneController,
+                    ),
+                    SizedBox(height: 30),
+                    RaisedButton(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 120, vertical: 15),
+                      shape: StadiumBorder(),
+                      color: Colors.black,
+                      textColor: Colors.white,
+                      onPressed: !contactService.loading
+                          ? () async {
+                              final ok = await contactService.save(
+                                  nameController.text,
+                                  emailController.text,
+                                  phoneController.text);
+                              if (ok) {
+                                Navigator.pop(context);
+                                _getContacts();
+                              } else {
+                                showAlert(
+                                  context,
+                                  "Cadastro incorreto",
+                                  'Verifique os dados',
+                                );
+                              }
                             }
-                          }
-                        : null,
-                    child: Text("Salvar"),
-                  ),
-                  SizedBox(height: 15),
-                ],
+                          : null,
+                      child: Text("Salvar"),
+                    ),
+                    SizedBox(height: 15),
+                  ],
+                ),
               ),
             );
           });
