@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration(seconds: 8), () {
+    Future.delayed(Duration(seconds: 5), () {
       Navigator.pushNamed(context, '/login_screen');
     });
   }
@@ -20,8 +20,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset("assets/logo.gif"),
+        child: Image.asset(
+          "assets/logo.gif",
+          width: 200,
+          height: 200,
+        ),
       ),
     );
   }
