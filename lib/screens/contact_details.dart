@@ -1,3 +1,4 @@
+import 'package:contactos/models/contacts.dart';
 import 'package:flutter/material.dart';
 
 class ContactDetails extends StatelessWidget {
@@ -6,6 +7,7 @@ class ContactDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    Result contact = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -39,10 +41,10 @@ class ContactDetails extends StatelessWidget {
                     ],
                   ),
                   CircleAvatar(
-                    radius: 30,
+                    radius: 35,
                     backgroundColor: Colors.white,
                     child: Text(
-                      "EA",
+                      contact.name[0],
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -50,13 +52,13 @@ class ContactDetails extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 7),
-                  Text("Eliezer Antonio",
+                  Text(contact.name,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w500)),
                   SizedBox(height: 4),
-                  Text("eliezerantonio@gmail.com",
+                  Text(contact.email,
                       style: TextStyle(color: Colors.white, fontSize: 15)),
                 ],
               ),

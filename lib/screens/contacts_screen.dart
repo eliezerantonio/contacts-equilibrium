@@ -75,7 +75,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   Widget contactTile(Result contact) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/contact_detail',);
+        Navigator.pushNamed(context, '/contact_detail', arguments: contact);
       },
       child: Container(
         padding: EdgeInsets.all(10),
