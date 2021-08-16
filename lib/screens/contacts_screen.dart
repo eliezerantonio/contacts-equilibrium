@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 
-class ContactsScreen extends StatelessWidget {
+class ContactsScreen extends StatefulWidget {
   const ContactsScreen({Key key}) : super(key: key);
 
+  @override
+  _ContactsScreenState createState() => _ContactsScreenState();
+}
+
+class _ContactsScreenState extends State<ContactsScreen> {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  final userService = UsersService();
+
+  List<User> users = [];
+
+  @override
+  void initState() {
+    super.initState();
+    this._cargarusers();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -162,5 +179,12 @@ class ContactsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _getContacts()async{
+      this.users = await userService.getUsers();
+
+    setState(() {});
+    _refreshController.refreshCompleted();
   }
 }

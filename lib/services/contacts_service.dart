@@ -3,12 +3,14 @@
 import 'package:contactos/globals/environment.dart';
 import 'package:contactos/models/contacts.dart';
 import 'package:contactos/models/contacts_response.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_service.dart';
 
-class ContactsProvider {
-  Future<List<Result>> getUsers() async {
+class ContactsService with ChangeNotifier {
+ 
+  Future<List<Result>> getContacts() async {
     try {
       final response = await http.get("${Environment.apiUrl}/contacts",
           headers: {
@@ -17,6 +19,7 @@ class ContactsProvider {
           });
 
       final usersResponse = contactsResponseFromJson(response.body);
+      print(usersResponse.results);
       return usersResponse.results;
     } catch (e) {
       return [];
