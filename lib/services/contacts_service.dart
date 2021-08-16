@@ -35,25 +35,30 @@ class ContactsService with ChangeNotifier {
     }
   }
 
-  Future save(String name, String email, int phone) async {
+  Future save(String name, String email, String phone) async {
     try {
       loading = true;
-      final data = {
+      final Map<String, dynamic> data = {
         "name": name,
         "email": email,
         "phone": phone,
       };
 
       final response = await http.post(
-        "${Environment.apiUrl}/contacts",
+        "${Environment.apiUrl}/contacts/",
         body: json.encode(data),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${await AuthService.getToken()}'
         },
       );
+      if (response.statusCode == 201) {
+        notifyListeners();
+        return true;
+      }
     } catch (e) {
       print(e);
+      return false;
     } finally {
       loading = false;
     }

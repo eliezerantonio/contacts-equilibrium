@@ -1,6 +1,7 @@
 import 'package:contactos/models/contacts.dart';
 import 'package:contactos/services/contacts_service.dart';
 import 'package:contactos/widgets/custom_textformfield.dart';
+import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   Widget buildBody(Size size) {
     return ListView(
-      physics: BouncingScrollPhysics(),
+      // physics: BouncingScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
       children: [
         _header(),
         SizedBox(
@@ -65,6 +67,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             padding: EdgeInsets.all(20),
             child: ListView.builder(
               itemCount: this.contacts.length,
+              shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) =>
                   contactTile(contacts[index]),
             ),
@@ -227,8 +230,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
   Future modalSave() {
     final nameController = TextEditingController();
     final phoneController = TextEditingController();
-    final emailControoler = TextEditingController();
-    final contactService = context.watch<ContactsService>();
+    final emailController = TextEditingController();
+    final contactService = context.read<ContactsService>();
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -264,7 +267,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 CustomTextFormField(
                   hintText: "E-mail",
                   type: TextInputType.emailAddress,
-                  controller: emailControoler,
+                  controller: emailController,
                 ),
                 SizedBox(
                   height: 10,
@@ -280,8 +283,19 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   shape: StadiumBorder(),
                   color: Colors.black,
                   textColor: Colors.white,
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/contacts_screen');
+                  onPressed: () async {
+                    final ok = await contactService.save(nameController.text,
+                        emailController.text, phoneController.text);
+                    if (ok) {
+                      Navigator.pop(context);
+                      _getContacts();
+                    } else {
+                      showAlert(
+                        context,
+                        "Cadastro incorreto",
+                        'Verifique os dados',
+                      );
+                    }
                   },
                   child: Text("Salvar"),
                 ),
