@@ -1,4 +1,5 @@
 import 'package:contactos/models/contacts.dart';
+import 'package:contactos/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class ContactDetails extends StatelessWidget {
@@ -81,13 +82,13 @@ class ContactDetails extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: Colors.black26,
+                                color: Colors.green,
                                 borderRadius: BorderRadius.circular(30)),
                             child: Icon(
                               Icons.call,
@@ -99,7 +100,7 @@ class ContactDetails extends StatelessWidget {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: Colors.black26,
+                                color: Colors.blue,
                                 borderRadius: BorderRadius.circular(30)),
                             child: Icon(
                               Icons.message,
@@ -111,7 +112,7 @@ class ContactDetails extends StatelessWidget {
                             height: 50,
                             width: 50,
                             decoration: BoxDecoration(
-                                color: Colors.black26,
+                                color: Colors.red,
                                 borderRadius: BorderRadius.circular(30)),
                             child: Icon(
                               Icons.email,
@@ -123,78 +124,26 @@ class ContactDetails extends StatelessWidget {
                       ),
                     ),
                     Divider(),
-                    Text("Informacoes"),
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(30)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          focusColor: Colors.transparent,
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 2.0),
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                              top: 15, left: 10, right: 10, bottom: 15),
-                          errorMaxLines: 1,
-                        ),
-                      ),
+                    CustomTextFormField(
+                      hintText: "Nome",
+                      initialValue: contact.name,
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(30)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          focusColor: Colors.transparent,
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 2.0),
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                              top: 15, left: 10, right: 10, bottom: 15),
-                          errorMaxLines: 1,
-                        ),
-                      ),
+                    CustomTextFormField(
+                      hintText: "E-mail",
+                         initialValue: contact.email,
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(30)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          focusColor: Colors.transparent,
-                          hintText: 'Password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: const BorderSide(
-                                color: Colors.white, width: 2.0),
-                          ),
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          contentPadding: const EdgeInsets.only(
-                              top: 15, left: 10, right: 10, bottom: 15),
-                          errorMaxLines: 1,
-                        ),
-                      ),
+                    CustomTextFormField(
+                      hintText: "Telefone",
+                        initialValue: contact.phone,
                     ),
                     SizedBox(height: 30),
                     RaisedButton(
@@ -206,8 +155,9 @@ class ContactDetails extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamed(context, '/contacts_screen');
                       },
-                      child: Text("Confirmar"),
+                      child: Text("Editar"),
                     ),
+                    SizedBox(height: 15),
                   ],
                 ),
               ),

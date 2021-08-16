@@ -5,19 +5,22 @@ class CustomTextFormField extends StatelessWidget {
     Key key,
     this.hintText,
     this.controller,
+    this.initialValue,
     this.isPassword = false,
   }) : super(key: key);
   final String hintText;
   final TextEditingController controller;
+  final String initialValue;
   bool isPassword;
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey[100], borderRadius: BorderRadius.circular(30)),
+          color: Colors.grey[100], borderRadius: BorderRadius.circular(13)),
       child: TextFormField(
         controller: controller,
         obscureText: isPassword,
+        initialValue: initialValue,
         decoration: InputDecoration(
           focusColor: Colors.transparent,
           hintText: hintText,
