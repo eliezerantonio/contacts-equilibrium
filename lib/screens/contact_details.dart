@@ -168,22 +168,32 @@ class ContactDetails extends StatelessWidget {
                         textColor: Colors.white,
                         onPressed: !contactService.loading
                             ? () async {
-                                final ok = await contactService.update(
-                                    nameController.text,
-                                    emailController.text,
-                                    phoneController.text,
-                                    contact.id);
-                                if (ok) {
-                                  showAlert(
-                                    context,
-                                    "Sucesso",
-                                    'Dados Atualizados ',
-                                  );
+                                if (emailController.text.isNotEmpty &&
+                                    phoneController.text.isNotEmpty &&
+                                    nameController.text.isNotEmpty) {
+                                  final ok = await contactService.update(
+                                      nameController.text,
+                                      emailController.text,
+                                      phoneController.text,
+                                      contact.id);
+                                  if (ok) {
+                                    showAlert(
+                                      context,
+                                      "Sucesso",
+                                      'Dados Atualizados ',
+                                    );
+                                  } else {
+                                    showAlert(
+                                      context,
+                                      "Cadastro incorreto",
+                                      'Verifique os dados',
+                                    );
+                                  }
                                 } else {
                                   showAlert(
                                     context,
-                                    "Cadastro incorreto",
-                                    'Verifique os dados',
+                                    "Erro",
+                                    'Preencha os campos',
                                   );
                                 }
                               }
