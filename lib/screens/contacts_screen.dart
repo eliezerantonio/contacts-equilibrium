@@ -41,6 +41,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   Widget buildBody(Size size) {
     return CustomScrollView(
+      physics: BouncingScrollPhysics(),
       slivers: <Widget>[
         SliverAppBar(
           backgroundColor: Colors.white,

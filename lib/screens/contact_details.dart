@@ -77,7 +77,6 @@ class ContactDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Spacer(),
             Container(
               height: size.height * 0.7,
               decoration: BoxDecoration(
