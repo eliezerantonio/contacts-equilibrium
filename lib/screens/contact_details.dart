@@ -5,6 +5,7 @@ import 'package:contactos/widgets/custom_textformfield.dart';
 import 'package:contactos/widgets/show_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactDetails extends StatelessWidget {
   ContactDetails({Key key}) : super(key: key);
@@ -97,16 +98,25 @@ class ContactDetails extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Icon(
-                                Icons.call,
-                                size: 30,
-                                color: Colors.white,
+                            GestureDetector(
+                              onTap: () async {
+                                if (await canLaunch(contact.phone)) {
+                                  launch(contact.phone);
+                                } else {
+                                  showError(context);
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Icon(
+                                  Icons.call,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             Container(
@@ -121,16 +131,28 @@ class ContactDetails extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Icon(
-                                Icons.email,
-                                size: 30,
-                                color: Colors.white,
+                            GestureDetector(
+                              onTap: () async {
+                                final Uri _emailLaunchUri = Uri(
+                                    scheme: contact.name,
+                                    path: contact.email,
+                                    queryParameters: {
+                                      'subject':
+                                          'Example Subject & Symbols are allowed!'
+                                    });
+                                launch(_emailLaunchUri.toString());
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Icon(
+                                  Icons.email,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ],
@@ -207,6 +229,15 @@ class ContactDetails extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void showError(BuildContext context) {
+    Scaffold.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Este dispositivo não possui esta função"),
+        backgroundColor: Colors.red,
       ),
     );
   }
