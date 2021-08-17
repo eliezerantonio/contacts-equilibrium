@@ -227,85 +227,87 @@ class _ContactsScreenState extends State<ContactsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.all(8.0),
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Icon(
-                          Icons.people,
-                          size: 30,
-                          color: Colors.white,
+                  child: FadeIn(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 50,
+                          padding: const EdgeInsets.all(8.0),
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Icon(
+                            Icons.people,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      Divider(),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextFormField(
-                        hintText: "Nome",
-                        controller: nameController,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextFormField(
-                        hintText: "E-mail",
-                        type: TextInputType.emailAddress,
-                        controller: emailController,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomTextFormField(
-                        hintText: "Telefone",
-                        type: TextInputType.phone,
-                        controller: phoneController,
-                      ),
-                      SizedBox(height: 30),
-                      RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                        shape: StadiumBorder(),
-                        color: Colors.black,
-                        textColor: Colors.white,
-                        onPressed: !contactService.loading
-                            ? () async {
-                                if (emailController.text.isNotEmpty &&
-                                    phoneController.text.isNotEmpty &&
-                                    nameController.text.isNotEmpty) {
-                                  final ok = await contactService.save(
-                                      nameController.text,
-                                      emailController.text,
-                                      phoneController.text);
-                                  if (ok) {
-                                    Navigator.pop(context);
-                                    _getContacts();
+                        Divider(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextFormField(
+                          hintText: "Nome",
+                          controller: nameController,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextFormField(
+                          hintText: "E-mail",
+                          type: TextInputType.emailAddress,
+                          controller: emailController,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomTextFormField(
+                          hintText: "Telefone",
+                          type: TextInputType.phone,
+                          controller: phoneController,
+                        ),
+                        SizedBox(height: 30),
+                        RaisedButton(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 100, vertical: 15),
+                          shape: StadiumBorder(),
+                          color: Colors.black,
+                          textColor: Colors.white,
+                          onPressed: !contactService.loading
+                              ? () async {
+                                  if (emailController.text.isNotEmpty &&
+                                      phoneController.text.isNotEmpty &&
+                                      nameController.text.isNotEmpty) {
+                                    final ok = await contactService.save(
+                                        nameController.text,
+                                        emailController.text,
+                                        phoneController.text);
+                                    if (ok) {
+                                      Navigator.pop(context);
+                                      _getContacts();
+                                    } else {
+                                      showAlert(
+                                        context,
+                                        "Cadastro incorreto",
+                                        'Verifique os dados',
+                                      );
+                                    }
                                   } else {
                                     showAlert(
                                       context,
-                                      "Cadastro incorreto",
-                                      'Verifique os dados',
+                                      "Erro",
+                                      'Preencha os campos',
                                     );
                                   }
-                                } else {
-                                  showAlert(
-                                    context,
-                                    "Erro",
-                                    'Preencha os campos',
-                                  );
                                 }
-                              }
-                            : null,
-                        child: Text("Salvar"),
-                      ),
-                      SizedBox(height: 15),
-                    ],
+                              : null,
+                          child: Text("Salvar"),
+                        ),
+                        SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ),
               );

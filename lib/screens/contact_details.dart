@@ -100,10 +100,8 @@ class ContactDetails extends StatelessWidget {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                if (await canLaunch(contact.phone)) {
-                                  launch(contact.phone);
-                                } else {
-                                  showError(context);
+                                if (await canLaunch('tel:${contact.phone}')) {
+                                  launch('tel:${contact.phone}');
                                 }
                               },
                               child: Container(
@@ -134,8 +132,8 @@ class ContactDetails extends StatelessWidget {
                             GestureDetector(
                               onTap: () async {
                                 final Uri _emailLaunchUri = Uri(
-                                    scheme: contact.name,
-                                    path: contact.email,
+                                    scheme: 'mailto',
+                                    path: '${contact.email}',
                                     queryParameters: {
                                       'subject':
                                           'Example Subject & Symbols are allowed!'
@@ -229,15 +227,6 @@ class ContactDetails extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void showError(BuildContext context) {
-    Scaffold.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Este dispositivo não possui esta função"),
-        backgroundColor: Colors.red,
       ),
     );
   }
